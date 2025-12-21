@@ -1,41 +1,34 @@
 {
-<<<<<<< HEAD
-  "name": "ecomerce-web-app",
-=======
+
   "name": "backend",
->>>>>>> 009542e (Your commit message here)
+
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+
+  "description": "Backend for the application",
+
+  "main": "app.js",
+
   "scripts": {
-<<<<<<< HEAD
-    "start": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon app.js",
+
+    "start": "node app.js",
+
     "dev": "nodemon app.js"
-=======
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
->>>>>>> 009542e (Your commit message here)
+
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-<<<<<<< HEAD
+
   "dependencies": {
-    "authorization": "^1.0.9",
-    "bcryptjs": "^3.0.3",
+
     "dotenv": "^17.2.3",
+
     "express": "^5.2.1",
-    "json": "^11.0.0",
-    "jsonwebtoken": "^9.0.3",
-    "mongoose": "^8.20.1",
-    "nodemailer": "^7.0.11",
-=======
-  "type": "commonjs",
-  "dependencies": {
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "mongoose": "^9.0.1",
->>>>>>> 009542e (Your commit message here)
+
+    "mongoose": "^9.0.2",
+
+    "nodejs": "^0.0.0",
+
     "nodemon": "^3.1.11"
+
   }
+
 }
+

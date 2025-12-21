@@ -1,32 +1,8 @@
 
-const express = require("express");
-const app = express();
-
-const databaseConnect = require("./database/dbconnect");
-const authRoute = require("./routes/authRoute");
-
-
-
-require("dotenv").config();
-
-
-app.use(express.json()); 
-
-
-app.use("/api/auth/", authRoute); 
-
-
-// Database connect
-databaseConnect(process.env.MONGO_URL);
-
-// Server start
-app.listen(process.env.PORT, () => {
-    console.log("Server is starting on port number:", process.env.PORT);
-});
  
 
 const express = require('express')
-const databaseConnect= require ('./db/database');
+const databaseConnect= require ('./database/dbconnect.js');
 const Blog = require("./model/blogmodel")
 const app = express()
 const port = 3000
@@ -36,12 +12,7 @@ app.use(express.urlencoded({extended:true}))
 databaseConnect(process.env.MONGO_URL); 
 
 app.post("/blog",async(req,res)=> { 
-    // console.log(req.body)
-
-    // data store garne  
-    // const title = req.body.title;
-    // const subTitle = req.body.subTitle;
-    // const description = req.body.description; 
+     
     const {description,subTitle,title} = req.body
 
    await Blog.create({
@@ -54,12 +25,9 @@ app.post("/blog",async(req,res)=> {
         massage:"blog crate sucessfully"
     })
 })
-// gat api /// blog database bata fetch garar fronted ma show graxa 
 
 app.get("/blogs",async(req,res)=>{
-    //instert garxa 
     const blogs = await Blog.find()
-    //databse koi adat xana vane yo run huxa 
     if (blogs.length == 0){
         res.status(401).json({
             massage:"empty blogs"
@@ -72,12 +40,11 @@ app.get("/blogs",async(req,res)=>{
     }
 })
 
-//single page /single blog api 
+ // single blog featch
 app.get("/blogs/:id",async (req,res)=> {
-    // id fectm garxa parms lie
+    
     const { id } = req.params;
-    console.log(id);
-    // data find 
+    console.log(id); 
     const blog = await Blog.findById(id);
 
 
@@ -98,9 +65,6 @@ app.get("/blogs/:id",async (req,res)=> {
 
 app.patch("/blogs/:id",async (req,res)=> {
      const id = req.params.id 
-    //  const title = req.body.title 
-    //  const  subTitle = req.body.subTitle
-    //  const description =req.body.description
 
     const {title ,subTitle ,description} = req.body
 
@@ -123,6 +87,18 @@ app.delete("/blogs:id",async (req,res)=> {
     res.status(200).json ({
         massage : " BLOg delete sucessfuly"
     })
+})
+
+app.patch("/blogs/:id",async (req,res)=> {
+    const { id } = req.params
+    const {title,subTitle,description} = req.body
+
+    await Blog.findByIdAndUpdate(id,{
+        title : title,
+        subTitle: subTitle,
+        description: description
+    })
+
 })
 
 app.listen(port, () => {
