@@ -3,23 +3,34 @@ const jwt = require("jsonwebtoken")
 const User = require("../model/usermodel")
 
 const isAuthention = async (req, res, next) => {
-   
-    console.log("isAuthention middleware called");
-    // yaha ma token verify garne code halne
-    // for now, ma assume garxu token valid xa vanera
 
-    const token = req.headers.autherization;
+    console.log("isAuthention middleware called");
+
+    const token = req.headers.authorization;
     console.log("Token:", token);
     if (!token) {
         return res.status(401).json({
-            message: "Authention token is missing"
+            message: "Authentication token is missing"
         })
     }
-// token verify garne
-     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    const doesUserExist = await User.findOne({ _id: decode.id })
-    next();
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY || "hello@33rwcfd,.dhh");
+        const doesUserExist = await User.findOne({ _id: decoded.id })
+
+        if (!doesUserExist) {
+            return res.status(401).json({
+                message: "User not found"
+            })
+        }
+
+        req.user = doesUserExist;
+        next();
+    } catch (error) {
+        return res.status(401).json({
+            message: "Invalid token"
+        })
+    }
 }
 
 module.exports = isAuthention;

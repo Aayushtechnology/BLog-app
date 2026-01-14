@@ -1,15 +1,17 @@
-
- 
-
 const express = require('express')
-const databaseConnect= require ('./database/dbconnect.js');
+const cors = require('cors')
+const databaseConnect = require('./database/dbconnect.js');
 const Blog = require("./model/blogmodel")
+const authRoute = require("./routes/authRoute")
 const app = express()
 const port = 3000
 
+app.use(cors())
 app.use(express.json());
-app.use(express.urlencoded({extended:true})) 
-databaseConnect(process.env.MONGO_URL); 
+app.use(express.urlencoded({extended:true}))
+databaseConnect(process.env.MONGO_URL);
+
+app.use("/api/auth", authRoute)
 
 app.post("/blog",async(req,res)=> { 
      
@@ -79,29 +81,16 @@ app.patch("/blogs/:id",async (req,res)=> {
   })
 })
 
-app.delete("/blogs:id",async (req,res)=> {
+app.delete("/blogs/:id",async (req,res)=> {
     const {id} = req.params
 
     await Blog.findByIdAndDelete(id)
 
     res.status(200).json ({
-        massage : " BLOg delete sucessfuly"
+        message : "Blog deleted successfully"
     })
-})
-
-app.patch("/blogs/:id",async (req,res)=> {
-    const { id } = req.params
-    const {title,subTitle,description} = req.body
-
-    await Blog.findByIdAndUpdate(id,{
-        title : title,
-        subTitle: subTitle,
-        description: description
-    })
-
 })
 
 app.listen(port, () => {
     console.log(`sever is running port number ${port}`)
 } ) ;
-
